@@ -1,7 +1,8 @@
-package com.elnemr.unittest
+package com.elnemr.unittest.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.elnemr.unittest.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
