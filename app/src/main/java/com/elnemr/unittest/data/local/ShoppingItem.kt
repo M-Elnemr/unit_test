@@ -9,6 +9,7 @@ data class ShoppingItem(
     var amount: Int,
     var price: Float,
     var imageUrl: String,
+
     @PrimaryKey(autoGenerate = true)
-    val id: Int?
+    val id: Int? = 0
 )
