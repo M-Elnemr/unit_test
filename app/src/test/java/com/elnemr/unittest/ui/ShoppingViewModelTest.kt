@@ -17,6 +17,7 @@ class ShoppingViewModelTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    //because we use coroutines into insertShoppingItem()
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 

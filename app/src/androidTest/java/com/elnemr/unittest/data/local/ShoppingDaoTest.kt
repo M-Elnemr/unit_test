@@ -5,7 +5,10 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import com.elnemr.unittest.HiltTestRunner
 import com.elnemr.unittest.getOrAwaitValue
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -13,28 +16,39 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import javax.inject.Inject
+import javax.inject.Named
 
 @ExperimentalCoroutinesApi
-@RunWith(AndroidJUnit4::class)
+//@RunWith(AndroidJUnit4::class) // not needed as we are using HiltRunner
 @SmallTest // for unit test
 // @MediumTest // for integrated test
 // @LargeTest // for UI test
+@HiltAndroidTest
 class ShoppingDaoTest {
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var database: MainDatabase
+    @Inject
+    @Named("test_db") // to find the exact dependency
+    lateinit var database: MainDatabase
+
     private lateinit var dao: ShoppingDao
 
     @Before
     fun setUp() {
+        hiltRule.inject()
         // not a real database - holds the records in ram for only that test case not in the storage
-        database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(), MainDatabase::class.java
-        )// we need to access the database from the main thread we don't want multi threading
-            .allowMainThreadQueries().build()
+//        database = Room.inMemoryDatabaseBuilder(
+//            ApplicationProvider.getApplicationContext(), MainDatabase::class.java
+//        )// we need to access the database from the main thread we don't want multi threading
+//            .allowMainThreadQueries().build()
 
+        // we won't inject dao because we want to init it before each test
         dao = database.shoppingDao()
     }
 
